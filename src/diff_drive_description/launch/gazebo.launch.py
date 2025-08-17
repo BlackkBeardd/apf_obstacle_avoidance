@@ -32,9 +32,6 @@ def generate_launch_description():
         value=[str(Path(diff_drive_description_dir).parent.resolve())],
     )
 
-    # ros_distro = os.environ["ROS_DISTRO"]
-    # is_ignition = "True" if ros_distro == "humble" else "False"
-
     robot_description = ParameterValue(
         Command(["xacro ", LaunchConfiguration("model")]),
         value_type=str,
@@ -55,12 +52,22 @@ def generate_launch_description():
         ),
         launch_arguments=[("gz_args", [" -v 4", " -r", " empty.sdf"])],
     )
-
     gz_spawn_entity = Node(
         package="ros_gz_sim",
         executable="create",
         output="screen",
-        arguments=["-topic", "robot_description", "-name", "bumperbot"],
+        arguments=[
+            "-topic",
+            "robot_description",
+            "-name",
+            "diff_robot",
+            "-x",
+            "0",
+            "-y",
+            "0",
+            "-z",
+            "0.1",
+        ],
     )
 
     rviz_node = Node(
@@ -80,15 +87,21 @@ def generate_launch_description():
         parameters=[{"use_gui": False}],
     )
 
+    bridge_params = os.path.join(
+        get_package_share_directory("diff_drive_description"),
+        "config",
+        "gazebo_bridge.yaml",
+    )
     gz_ros2_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
         arguments=[
-            "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
             "lidar@sensor_msgs/msg/LaserScan@gz.msgs.LaserScan",
             "/lidar/points@sensor_msgs/msg/PointCloud2@gz.msgs.PointCloudPacked",
             "cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist",
             "/model/diff_drive/odometry@nav_msgs/msg/Odometry@gz.msgs.Odometry",
+            "/model/diff_robot/odometry@nav_msgs/msg/Odometry@gz.msgs.Odometry",
+            "joint_states@sensor_msgs/msg/JointState@gz.msgs.Model",
         ],
     )
 
@@ -100,7 +113,6 @@ def generate_launch_description():
             gazebo,
             gz_spawn_entity,
             gz_ros2_bridge,
-            rviz_node,
-            joint_state_publisher_node,
+            # rviz_node,
         ]
     )
