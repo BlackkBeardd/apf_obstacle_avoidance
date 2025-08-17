@@ -9,9 +9,20 @@ setup(
     data_files=[
         ("share/ament_index/resource_index/packages", ["resource/" + package_name]),
         ("share/" + package_name, ["package.xml"]),
-        ("share/" + package_name, ["launch/display.launch.py"]),
-        ("share/" + package_name, ["urdf/diff_drive.xacro"]),
-        ("share/" + package_name, ["urdf/diff_drive_macro.xacro"]),
+        (
+            "share/" + package_name + "/launch",
+            ["launch/display.launch.py", "launch/gazebo.launch.py"],
+        ),
+        (
+            "share/" + package_name + "/urdf",
+            [
+                "urdf/diff_drive.xacro",
+                "urdf/diff_drive_macro.xacro",
+                "urdf/lidar.xacro",
+                "urdf/gazebo_control.xacro",
+            ],
+        ),
+        ("share/" + package_name + "/rviz", ["rviz/diff_drive.rviz"]),
     ],
     install_requires=["setuptools"],
     zip_safe=True,

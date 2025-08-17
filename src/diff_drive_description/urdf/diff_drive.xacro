@@ -3,9 +3,6 @@
 <robot name="diff_robot"
   xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <xacro:include filename="diff_drive_macro.xacro" />
-
-
   <xacro:property name="base_radius" value="0.15" />
   <xacro:property name="passive_wheel_height" value="0.04" />
   <xacro:property name="passive_wheel_radius" value="0.025" />
@@ -13,6 +10,13 @@
   <xacro:property name="wheel_radius" value="0.039" />
   <xacro:property name="wheel_height" value="0.02" />
   <xacro:property name="wheel_mass" value="2.5" />
+
+
+  <xacro:include filename="diff_drive_macro.xacro" />
+  <xacro:include filename="lidar.xacro" />
+  <xacro:include filename="gazebo_control.xacro" />
+
+
 
   <link name="base_link">
     <inertial>
