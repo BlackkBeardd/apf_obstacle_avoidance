@@ -100,7 +100,6 @@ def generate_launch_description():
             "/lidar/points@sensor_msgs/msg/PointCloud2@gz.msgs.PointCloudPacked",
             "cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist",
             "/model/diff_drive/odometry@nav_msgs/msg/Odometry@gz.msgs.Odometry",
-            "/model/diff_robot/odometry@nav_msgs/msg/Odometry@gz.msgs.Odometry",
             "joint_states@sensor_msgs/msg/JointState@gz.msgs.Model",
         ],
     )
